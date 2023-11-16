@@ -1,4 +1,8 @@
+import appConfig from "@/appConfig";
+
 export const state = () => ({
+  title: appConfig.appName,
+
   loading: false,
   dark: false,
 
@@ -28,6 +32,9 @@ export const mutations = {
   },
   setDark (state, dark) {
     state.dark = dark
+  },
+  setTitle(state, title) {
+    state.title = title
   }
 }
 

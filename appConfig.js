@@ -3,7 +3,11 @@ import {PlatformCrudTableDesc} from "@/@app-platform/services/platformCrudServic
 
 /** @type {Object.<string, PlatformCrudTableDesc>} */
 export const PlatformCrudTables = Object.freeze({
-    coursesGroups: new PlatformCrudTableDesc({ code: 'coursesGroups', table: 'dict_course_groups', name: 'Группы курсов', cacheable: true}),
+    courses: new PlatformCrudTableDesc({ code: 'courses', table: 'dict_courses', name: 'Курсы', cacheable: true}),
+    tests: new PlatformCrudTableDesc({ code: 'tests', table: 'dict_tests', name: 'Тесты', cacheable: true}),
+    questions: new PlatformCrudTableDesc({ code: 'questions', table: 'dict_questions', name: 'Вопросы', cacheable: false}),
+
+    attempts: new PlatformCrudTableDesc({ code: 'attempts', table: 'data_results', name: 'Результаты', cacheable: false}),
 });
 
 export default {

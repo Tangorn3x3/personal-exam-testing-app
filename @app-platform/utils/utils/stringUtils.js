@@ -8,6 +8,12 @@ export function stringHashToArrayIndex(str, arrayLength) {
   return Math.abs(hash) % arrayLength;
 }
 
+export function toSnakeCase(inputString) {
+  return inputString
+      .replace(/([A-ZА-Я0-9])/g, (match, offset) => (offset > 0 ? `_${match.toLowerCase()}` : match.toLowerCase()))
+      .replace(/\s/g, '_'); // Заменяем пробелы на "_"
+}
+
 export function searchInStrings(searchStr, strings = []) {
   searchStr = _.toLower(searchStr)
   for (let i = 0; i < strings.length; i++) {

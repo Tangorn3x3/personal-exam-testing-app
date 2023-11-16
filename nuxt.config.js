@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 import ru from 'vuetify/es5/locale/ru'
 import packageJson from './package.json'
 
-const SRV_ADDR = 'https://script.google.com/macros/s/AKfycbyUkT2j2JhjNPfzPE_Y2-54AmVLB3b_hD95u2Kk98G9I2ecaGbkFcvEgL2VNcQl1-ts/exec'
+const SRV_ADDR = 'https://script.google.com/macros/s/AKfycbzdrcAuZijMqesRCgxyjgJ4t4BSOjImqhqKLbf2rqb_DGKE0iX6McR15-wTv8-pukJi-w/exec'
 const SRV_MAIN_PATH = '/personal-exam-testing-app/'
 export const SRV_PATH = '/personal-exam-testing-app/'
 
@@ -71,7 +71,7 @@ export default {
     '~/@app-platform/plugins/wrappers/platform-api-wrapper',
     '~/@app-platform/plugins/libs/i18n',
 
-
+    '~/plugins/wrappers/questionServicesWrapper'
   ],
 
   devModules: [

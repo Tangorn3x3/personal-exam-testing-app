@@ -1,8 +1,8 @@
 {
-  "id": "",
-  "name": "",
-  "hours": 0,
-  "priority": 0,
-  "icon": "",
-  "image": ""
+  "key": "node",
+  "type": "node",
+  "text": "node app.js",
+  "images": [
+    "https://avatars.githubusercontent.com/u/9950313?v=3&s=400"
+  ]
 }

@@ -25,7 +25,7 @@ export async function list(apiType, filter = {}) {
         let cacheKey = prepareCacheKey(`${apiType.code}`)
 
         if (apiType.cacheable) {
-            let cached = _getCache(cacheKey)
+            let cached = getCache(cacheKey)
             if (cached) {
                 console.log('Getted from cache', cacheKey)
                 return cached
@@ -38,7 +38,7 @@ export async function list(apiType, filter = {}) {
         })
 
         console.debug(`Загрузка списка ${apiType.name} из таблицы ${apiType.table} завершена`, list)
-        _putCache(cacheKey, list, apiType)
+        putCache(cacheKey, list, apiType)
 
         return list;
     } catch (error) {
@@ -182,21 +182,21 @@ export function clearCacheKey(apiType, id) {
     localStorage.removeItem(key);
 }
 
-function _putCache(key, data, apiType = null) {
+export function putCache(key, data, apiType = null) {
     if (_.has(apiType, 'cacheable') && !apiType.cacheable) return; // не кэшируем отмеченные типы
 
     localStorage.setItem(key, JSON.stringify(data))
 }
 
-function _putCacheAndClearRelated(apiType, id, key, data) {
-    _putCache(key, data, apiType)
+export function putCacheAndClearRelated(apiType, id, key, data) {
+    putCache(key, data, apiType)
 
     _.forEach(apiType.clearCaches, (value) => {
         clearCacheKey(_.get(PlatformCrudTables, value), id)
     })
 }
 
-function _getCache(key) {
+export function getCache(key) {
     let useCache = USE_CACHE || appConfig.platformCrud.cacheEnabled
     if (!useCache) return undefined
 
@@ -208,7 +208,7 @@ function _getCache(key) {
     }
 }
 
-function prepareCacheKey(key) {
+export function prepareCacheKey(key) {
     const prefix = appConfig.platformCrud.cachePrefix || DEFAULT_CACHE_KEY_PREFIX
     return prefix + key
 }
