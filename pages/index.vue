@@ -20,6 +20,7 @@ import TestPlatformFetch from "@/components/TestPlatformFetch.vue";
 import {mapState} from "vuex";
 import CourseTestsList from "@/components/courses_tests/CourseTestsList.vue";
 import CardLoadingSkeleton from "@/components/@app-platform/common/loaders/CardLoadingSkeleton.vue";
+import appConfig from "@/appConfig";
 
 export default {
   components: {CardLoadingSkeleton, CourseTestsList, TestPlatformFetch},
@@ -32,7 +33,7 @@ export default {
     ...mapState('questionDictionaryStore', { selectedCourse: 'selectedCourse' }),
   },
   mounted() {
-
+    this.setTitle(appConfig.appName)
   },
   methods: {
 

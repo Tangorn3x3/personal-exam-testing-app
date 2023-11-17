@@ -21,7 +21,7 @@ export default {
 
 <template>
   <div>
-    <attempt-content v-for="(content, i) in contents" :content="content" dense/>
+    <attempt-content v-for="(content, i) in contents" :key="content.hashCode" :content="content"/>
   </div>
 </template>
 

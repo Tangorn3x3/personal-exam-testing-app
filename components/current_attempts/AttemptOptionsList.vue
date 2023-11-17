@@ -24,7 +24,6 @@ export default {
         return this.answers
       },
       set (val) {
-        console.log('set', val)
         this.$emit('change', val)
       }
     },
@@ -45,6 +44,9 @@ export default {
     },
     onCheckboxChanged(payload) {
       //console.log('onCheckboxChange', payload)
+    },
+    onContext(payload) {
+      console.log('onContext', payload)
     }
   }
 }
@@ -58,7 +60,7 @@ export default {
                :value="option.key">
         <template v-slot:label>
           <h5>{{option.key}}.</h5>
-          <attempt-content v-for="content in option.contents" :key="content.key" :content="content"/>
+          <attempt-content v-for="content in option.contents" :key="content.key" :content="content" :enlarge="1"/>
         </template>
       </v-radio>
     </v-radio-group>
@@ -69,11 +71,11 @@ export default {
                   v-model="checkboxModel"
                   :value="option.key"
                   dense hide-details
-                  @change="onCheckboxChanged"
+                  @change="onCheckboxChanged" @contextmenu="onContext"
       >
         <template v-slot:label>
           <h5>{{option.key}}.</h5>
-          <attempt-content v-for="content in option.contents" :key="content.key" :content="content"/>
+          <attempt-content v-for="content in option.contents" :key="content.key" :content="content" :enlarge="1"/>
         </template>
       </v-checkbox>
     </div>

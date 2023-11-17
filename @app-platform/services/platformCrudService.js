@@ -172,14 +172,26 @@ export function clearCaches(crudTablesObject) {
     })
 }
 
+export function clearAllSupportedCaches() {
+    let basePrefix = prepareCacheKey('')
+
+    Object.keys(localStorage)
+        .filter(key => key.startsWith(basePrefix))
+        .forEach(key => clearCacheKeyByCode(key));
+}
+
 /**
  * @param {PlatformCrudTableDesc} apiType
  * @param {string} id
  */
 export function clearCacheKey(apiType, id) {
     let key = !!id ? `${apiType.code}_${id}` : apiType.code
-    console.debug('clearing ' + key, apiType, id)
-    localStorage.removeItem(key);
+    clearCacheKeyByCode(key)
+}
+
+function clearCacheKeyByCode(code) {
+    console.debug('clearing ' + code)
+    localStorage.removeItem(code);
 }
 
 export function putCache(key, data, apiType = null) {

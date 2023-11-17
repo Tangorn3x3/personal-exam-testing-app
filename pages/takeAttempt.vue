@@ -108,7 +108,7 @@ export default {
           <h4 class="mb-4">Ответ: <span v-for="(answer, i) in currentQuestion.answers">{{`${answer}${ i < currentQuestion.answers.length - 1 ? ',  ' : ''}`}} </span></h4>
           <div class="description">
             <attempt-content v-for="(content, i) in currentQuestion.answerDescriptionContents" :key="i"
-                             :content="content"  normal-text/>
+                             :content="content"  normal-text reformat-text/>
           </div>
         </v-alert>
       </v-col>

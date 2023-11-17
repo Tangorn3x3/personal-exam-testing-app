@@ -25,10 +25,10 @@
 
       <v-spacer/>
 
-      <v-btn v-if="can('viewer')"
+      <v-btn v-if="false && can('viewer')"
           color="default" icon class="mr-2" @click.stop="clearRootCache"><v-icon>cached</v-icon></v-btn>
 
-      <v-btn @click="$auth.logout()" icon><v-icon>exit_to_app</v-icon></v-btn>
+      <v-btn @click="onLogout" icon><v-icon>exit_to_app</v-icon></v-btn>
     </v-app-bar>
 
 
@@ -46,8 +46,8 @@
 
 <script>
 import {mapActions, mapMutations, mapState} from 'vuex'
-  import appConfig, {PlatformCrudTables} from "@/appConfig";
-  import {clearCaches} from "@/@app-platform/services/platformCrudService";
+import appConfig, {PlatformCrudTables} from "@/appConfig";
+import {clearAllSupportedCaches, clearCaches} from "@/@app-platform/services/platformCrudService";
 
   import SnackbarAlert from "@/components/@app-platform/common/alerts/SnackbarAlert.vue";
   import GlobalLoader from "@/components/@app-platform/common/GlobalLoader";
@@ -116,6 +116,11 @@ import CoursesList from "@/components/courses_tests/CoursesList.vue";
         this.fetchTests()
 
         this.loadingItems = false
+      },
+
+      onLogout() {
+        clearAllSupportedCaches()
+        this.$auth.logout()
       },
     }
   }

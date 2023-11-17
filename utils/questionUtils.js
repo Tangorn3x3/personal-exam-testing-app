@@ -21,12 +21,13 @@ export function convertQuestionEntity(entity) {
 
 
 
-function parseContent(inputText) {
+function parseContent(inputTextOriginal) {
   /** @type {QuestionContentItem[]} */
   const objects = [];
 
   let currentText = ''; // Переменная для хранения текущего текста
 
+  let inputText = normalizeImageLinks(inputTextOriginal);
   const lines = inputText.split('\n');
 
   lines.forEach(line => {
@@ -57,37 +58,46 @@ function parseContent(inputText) {
   return objects.filter(item => !!item.text || !!item.image);
 }
 
-function parseOptions(inputText) {
-  const regex = /([A-Z]\.)?\s*((\d+\.)?\s*([A-Z]\.)?)?\s*([\s\S]*?)(?=\n[A-Z\d]\.|$)/g;
+function normalizeImageLinks(inputText) {
+  const replacedString = inputText
+      .replace(/https:\/\/drive\.google\.com\/file\/d\//g, 'https://drive.google.com/uc?export=view&id=')
+      .replace(/\/view\?usp=sharing/g, '');
 
-  const matchedItems = [];
-  let match;
+  return replacedString;
+}
 
-  while ((match = regex.exec(inputText)) !== null) {
-    const keyRegex = /^([A-Z]\.)?(\d+\.)?$/;
+  function parseOptions(inputText) {
+    const regex = /([A-Z]\.)?\s*((\d+\.)?\s*([A-Z]\.)?)?\s*([\s\S]*?)(?=\n[A-Z\d]\.|$)/g;
 
-    let key = match.find((element) => keyRegex.test(element));;
-    const value = match[5].trim();
+    const matchedItems = [];
+    let match;
 
-    if (!key && !value) break;
+    while ((match = regex.exec(inputText)) !== null) {
+      const keyRegex = /^([A-Z]\.)?(\d+\.)?$/;
 
-    matchedItems.push({ key: !!key ? key.trim() : '', value });
+      let key = match.find((element) => keyRegex.test(element));
+      ;
+      const value = match[5].trim();
+
+      if (!key && !value) break;
+
+      matchedItems.push({key: !!key ? key.trim() : '', value});
+    }
+
+    return matchedItems.map(item => {
+      return new QuestionOption({
+        key: item.key.replace('.', '').trim(),
+        contents: parseContent(item.value.trim()),
+      });
+    });
   }
 
-  return matchedItems.map(item => {
-    return new QuestionOption({
-      key: item.key.replace('.', '').trim(),
-      contents: parseContent(item.value.trim()),
-    });
-  });
-}
+  function parseAnswer(inputString) {
+    if (!inputString) return [];
 
-function parseAnswer(inputString) {
-  if (!inputString) return [];
+    // Используем регулярное выражение для удаления разделителей и служебных символов
+    const cleanedString = inputString.replace(/[.,;:]/g, ',');
 
-  // Используем регулярное выражение для удаления разделителей и служебных символов
-  const cleanedString = inputString.replace(/[.,;:]/g, ',');
-
-  return cleanedString.split(',').filter(str => !!str).map(str => str.trim());
-}
+    return cleanedString.split(',').filter(str => !!str).map(str => str.trim());
+  }
 
