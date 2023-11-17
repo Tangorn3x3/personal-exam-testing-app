@@ -93,7 +93,7 @@ export default {
     height: auto;
   }
 
-  .code-keyword {font-family: monospace; font-weight: bold; font-size: 110%}
+  .code-keyword {font-family: monospace; font-weight: bold; font-size: 105%}
   .code-keyword.java-keyword { color: #022b94; }
   .code-keyword.camel-keyword { color: #750a80; }
   .code-keyword.method-keyword { color: #750a80; }
