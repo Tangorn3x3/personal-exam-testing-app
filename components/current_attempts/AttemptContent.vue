@@ -1,5 +1,6 @@
 <script>
 import {ContentType} from "@/models/questions/QuestionContentItem";
+import {highlightJavaKeywords} from "@/utils/questionUtils";
 
 const REFORMAT_EXTRA_REPLACE_AWARE_STRINGS = new Map([
   ['. Option', '.\n\nOption'],
@@ -47,7 +48,7 @@ export default {
 
       // Заменяем переносы строк внутри предложений на пробел
       text = text.replace(/([^.\n])\n([^A-ZА-Я])/g, '$1 $2');
-
+      text = highlightJavaKeywords(text)
       return text
     }
   },
@@ -59,7 +60,7 @@ export default {
 <template>
   <div>
     <div v-if="content.type === ContentType.TEXT" class="code pl-4 pr-4" :class="textClass">
-      <p v-if="reformatText">{{finalText}}</p>
+      <p v-if="reformatText" v-html="finalText"></p>
       <span v-else>{{finalText}}</span>
     </div>
 
@@ -70,7 +71,7 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style >
   .code {
     font-family: monospace;
     white-space: pre-wrap;
@@ -91,4 +92,12 @@ export default {
     width: 100%;
     height: auto;
   }
+
+  .code-keyword {font-family: monospace; font-weight: bold; font-size: 110%}
+  .code-keyword.java-keyword { color: #022b94; }
+  .code-keyword.camel-keyword { color: #750a80; }
+  .code-keyword.method-keyword { color: #750a80; }
+  .code-keyword.class-keyword { color: #750a80; }
+  .code-keyword.string-keyword { color: #036011; }
+  .code-keyword.num-keyword { color: #036011; }
 </style>
