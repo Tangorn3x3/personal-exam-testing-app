@@ -36,7 +36,7 @@ export default {
     short_name: APP_NAME,
     description: APP_NAME,
     lang: "ru",
-    theme_color: "#c5c5c5"
+    theme_color: "#9155FD"
   },
   workbox: {
     cacheAssets: false, // for /*
@@ -118,7 +118,7 @@ export default {
   },
 
   loading: { color: '#9155FD', height: '5px' },
-  loadingIndicator: { name: 'circle', color: '#9155FD', background: '#c4c4c4' },
+  loadingIndicator: { name: 'circle', color: '#c4c4c4', background: '#9155FD' },
 
   vuetify: {
       customVariables: ['~/assets/variables.scss'],
