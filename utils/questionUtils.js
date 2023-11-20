@@ -111,11 +111,15 @@ export function highlightJavaKeywords(text) {
         'final', 'finally', 'float', 'for', 'if', 'implements', 'import', 'instanceof', 'int',
         'interface', 'long', 'native', 'new', 'null', 'package', 'private', 'protected', 'public',
         'return', 'short', 'static', 'strictfp', 'super', 'switch', 'synchronized', 'this',
-        'throw', 'throws', 'transient', 'true', 'try', 'void', 'volatile', 'while'
+        'throw', 'throws', 'transient', 'true', 'try', 'void', 'volatile', 'while',
+        'var', 'record', 'yield', 'sealed', 'permits', 'non-sealed', 'open', 'module', 'requires', 'exports',
+        '(+)', '(-)', '(*)', '(/)', '(!)', '(<)', '(>)', '(=)', '(==)', '(>=)', '(<=)', '(!!)', '(~)', '(&)', '(&&)', '(|)', '||', '\(\^\)',
     ];
 
+    const javaIgnoredKeywords = javaKeywords.map(keyword => `${keyword} `);
+
     function highlightJavaSpecialKeywords(match) {
-        if (javaKeywords.includes(match)) {
+        if (javaKeywords.includes(match) ) {
             return highlightKeywords(match);
         } else {
             return match;
@@ -130,17 +134,22 @@ export function highlightJavaKeywords(text) {
     let targetText = text;
 
     //Заменяем ключевые слова Java на выделенные версии
-    const javaKeywordsRegex = /\b\w+\b/g;
-    targetText = targetText.replace(javaKeywordsRegex, highlightJavaSpecialKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword java-keyword');
+    const javaExpressionRegex = /^(?=.*[0-9a-zA-Z().+*/-])(?!.*[a-zA-Z]{2,})(?!.*[0-9]{2,})[0-9a-zA-Z().+*/-]*$/g;
+    targetText = targetText.replace(javaExpressionRegex, highlightKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword java-keyword');
 
-    // Заменяем camelCase и UpperCamelCase на выделенные версии
-    const camelCaseRegex = /\b[a-zA-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*\b/g;
-    targetText = targetText.replace(camelCaseRegex, highlightKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword camel-keyword');
+    //Заменяем ключевые слова Java на выделенные версии
+    const javaKeywordsRegex = /(\w+)|(\([=*\-+&!~^<>]+\))/g;
+    targetText = targetText.replace(javaKeywordsRegex, highlightJavaSpecialKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword java-keyword');
 
 
     // Заменяем вызовы методов на выделенные версии
     const methodCallRegex = /(\w+\.\w+\s*\(\))/g;
     targetText = targetText.replace(methodCallRegex, highlightKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword method-keyword');
+
+    // Заменяем camelCase и UpperCamelCase на выделенные версии
+    const camelCaseRegex = /@*[a-zA-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*\b/g;
+    targetText = targetText.replace(camelCaseRegex, highlightKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword camel-keyword');
+
 
     // Заменяем создание экземпляров классов на выделенные версии
     const instanceCreationRegex = /(\s+\w+\s*\(\))/g;
@@ -154,6 +163,10 @@ export function highlightJavaKeywords(text) {
     targetText = targetText.replace(charLiteralRegex, highlightKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword string-keyword');
     const numericLiteralRegex = /\b(\d+[LlFfDd])\b/g;
     targetText = targetText.replace(numericLiteralRegex, highlightKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword num-keyword');
+
+    // Заменяем дженерики
+    const genericsRegex = /(\w*\.*\w+<+(\w*\s*,*)*>+)/g;
+    targetText = targetText.replace(genericsRegex, highlightKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword generic-keyword');
 
     return targetText;
 }
