@@ -20,7 +20,7 @@ export function convertQuestionEntity(entity) {
 }
 
 
-function parseContent(inputTextOriginal) {
+export function parseContent(inputTextOriginal) {
     /** @type {QuestionContentItem[]} */
     const objects = [];
 
@@ -169,4 +169,42 @@ export function highlightJavaKeywords(text) {
     targetText = targetText.replace(genericsRegex, highlightKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword generic-keyword');
 
     return targetText;
+}
+
+export function convertMarkdownToHTML(text) {
+    // Замена жирного текста
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    // Замена курсива
+    text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+    // Замена заголовков
+    text = text.replace(/#{1,6} (.*?)(\n|$)/g, function(match, title) {
+        const level = match.trim().split(' ')[0].length;
+        return `<h${level}>${title.trim()}</h${level}>`;
+    });
+
+    // Замена списков
+    text = text.replace(/(?:^|\n)(\d+\.|[-*]) (.*?)(?=\n|$)/g, function(match, marker, item) {
+        const isNumbered = !isNaN(marker);
+        const tag = isNumbered ? 'ol' : 'ul';
+        return `<${tag}><li>${item.trim()}</li></${tag}>`;
+    });
+
+    // Замена гиперссылок
+    text = text.replace(/\[([^\]]+)]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+    // Замена цитат
+    //text = text.replace(/>(.*?)(\n|$)/g, '<blockquote>$1</blockquote>');
+
+    // Замена моноширинного текста
+    text = text.replace(/`(.*?)`/g, '<code>$1</code>');
+
+    // Замена подчеркнутого текста
+    text = text.replace(/__(.*?)__/g, '<u>$1</u>');
+
+    // Замена зачеркнутого текста
+    text = text.replace(/~~(.*?)~~/g, '<s>$1</s>');
+
+    return text;
 }

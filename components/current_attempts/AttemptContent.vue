@@ -1,10 +1,11 @@
 <script>
 import {ContentType} from "@/models/questions/QuestionContentItem";
-import {highlightJavaKeywords} from "@/utils/questionUtils";
+import {convertMarkdownToHTML, highlightJavaKeywords} from "@/utils/questionUtils";
 
 const REFORMAT_EXTRA_REPLACE_AWARE_STRINGS = new Map([
   ['. Option', '.\n\nOption'],
   ['. Line', '.\n\nLine'],
+  ['ANSWER:', ''],
 ])
 
 export default {
@@ -16,6 +17,11 @@ export default {
 
     reformatText: { type: Boolean, default: false },
     enlarge: { type: Number, default: 0 },
+
+    highlightParagraphArgs: { type: Array, default: () => [] },
+    highlightParagraphBreakBefore: { type: Boolean, default: true },
+    highlightParagraphBreakAfter: { type: Boolean, default: false },
+
   },
   data: () => ({
     loaded: false,
@@ -49,10 +55,27 @@ export default {
       // Заменяем переносы строк внутри предложений на пробел
       text = text.replace(/([^.\n])\n([^A-ZА-Я])/g, '$1 $2');
       text = highlightJavaKeywords(text)
+      text = convertMarkdownToHTML(text)
+
+      // форматируем начала каджого параграфа, если требуется
+      if (this.highlightParagraphArgs.length > 0)
+        text = this.highlightFirstParagraphs(text)
+
       return text
-    }
+    },
+
+
   },
   methods: {
+    highlightFirstParagraphs(inputText) {
+      let text = inputText
+
+      // Создаем регулярное выражение с возможными началами предложений
+      const regex = new RegExp(`(${this.highlightParagraphArgs.join("|")})[^.]*\\.`, "g");
+
+      // Заменяем каждое предложение на обернутый в <span> вариант
+      return text.replace(regex, (match) => `<span class="paragraph-highlighted">${this.highlightParagraphBreakBefore ? '\n\n' : ''}${match}${this.highlightParagraphBreakAfter ? '\n\n' : ''}</span>`);
+    }
   }
 }
 </script>
@@ -91,6 +114,11 @@ export default {
   .quest-image {
     width: 100%;
     height: auto;
+  }
+
+  .paragraph-highlighted {
+    font-weight: bold;
+    color: #001652;
   }
 
   .code-keyword {font-family: monospace; font-weight: bold; font-size: 105%}

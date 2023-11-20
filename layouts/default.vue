@@ -1,8 +1,8 @@
 <template>
   <v-app :dark="dark">
-    <v-navigation-drawer v-model="drawer" clipped app>
+    <v-navigation-drawer v-model="drawer" clipped app width="400">
 
-      <courses-list/>
+      <courses-list @course-selected="drawer = !drawer"/>
 
       <v-list>
         <v-list-item v-if="can(item.permission)"
@@ -20,7 +20,10 @@
 
 
     <v-app-bar color="primary" fixed clipped-left app dark>
-      <v-btn icon @click.stop="drawer = !drawer"><v-icon>menu</v-icon></v-btn>
+      <v-btn v-show="isMenuButtonVisible" icon @click.stop="drawer = !drawer"><v-icon>menu</v-icon></v-btn>
+
+      <back-button v-show="isBackButtonVisible" class="mr-4"/>
+
       <v-toolbar-title v-text="headerTitle"/>
 
       <v-spacer/>
@@ -52,9 +55,10 @@ import {clearAllSupportedCaches, clearCaches} from "@/@app-platform/services/pla
   import SnackbarAlert from "@/components/@app-platform/common/alerts/SnackbarAlert.vue";
   import GlobalLoader from "@/components/@app-platform/common/GlobalLoader";
 import CoursesList from "@/components/courses_tests/CoursesList.vue";
+import BackButton from "@/components/@app-platform/common/inputs/BackButton.vue";
 
   export default {
-    components: {CoursesList, SnackbarAlert, GlobalLoader},
+    components: {BackButton, CoursesList, SnackbarAlert, GlobalLoader},
     data() {
       return {
         drawer: false,

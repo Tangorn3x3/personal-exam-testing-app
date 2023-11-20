@@ -7,16 +7,24 @@ import AttemptContent from "@/components/current_attempts/AttemptContent.vue";
 import * as questionsService from "@/services/questionsService";
 import {ExamAttemptStatus} from "@/models/entities/ExamAttempt";
 import notificationService from "@/@app-platform/services/notificationService";
+import Vue from "vue";
 
 export default {
   name: "TakeAttempt",
   components: {AttemptContent, AttemptOptionsList, AttemptQuestionDisplay},
+/*  asyncData({store}) {
+    store.commit('utils/setBackButtonVisibility', true)
+    store.commit('utils/setMenuButtonVisibility', false)
+  },*/
   data() {
     return {
       loadingItems: false,
-
       answerVisible: false,
     }
+  },
+  mounted() {
+    this.disableMenuButton()
+    this.enableBackButton('/')
   },
   computed: {
     ...mapState('currentAttemptStore', { currentQuestions: 'currentQuestions', currentAnswers: 'currentAnswers' }),

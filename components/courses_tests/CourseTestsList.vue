@@ -2,9 +2,11 @@
 import {mapActions, mapState} from "vuex";
 import _ from "lodash";
 import * as questionsService from "@/services/questionsService";
+import CourseTestListItem from "@/components/courses_tests/CourseTestListItem.vue";
 
 export default {
   name: "CourseTestsList",
+  components: {CourseTestListItem},
   props: {
     course: { type: Object, required: true },
   },
@@ -41,19 +43,15 @@ export default {
 
     <v-card>
       <v-list>
-        <v-list-item
+        <course-test-list-item
             v-for="(test, i) in courseTests"
             :key="i"
-            @click="initAttempt(test)"
-        >
-          <v-list-item-content>
-            <v-progress-linear v-if="loading === test.name" indeterminate color="primary" class="mb-2"/>
-            <v-list-item-title v-else v-text="test.name"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
+            :test="test" :loading="loading"
+            @click="initAttempt(test)"/>
       </v-list>
     </v-card>
+
+
   </div>
 
 

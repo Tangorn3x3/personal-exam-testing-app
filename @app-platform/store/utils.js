@@ -1,5 +1,10 @@
 import appConfig from "@/appConfig";
 
+const initialTopButtonsState = {
+  isBackButtonVisible: false,
+  isMenuButtonVisible: true,
+}
+
 export const state = () => ({
   title: appConfig.appName,
 
@@ -8,6 +13,9 @@ export const state = () => ({
 
   snackbar: false,
   snackbarText: '',
+
+  isBackButtonVisible: initialTopButtonsState.isBackButtonVisible,
+  isMenuButtonVisible: initialTopButtonsState.isMenuButtonVisible,
 })
 
 export const actions = {
@@ -35,6 +43,16 @@ export const mutations = {
   },
   setTitle(state, title) {
     state.title = title
+  },
+  setMenuButtonVisibility(state, visible) {
+    state.isMenuButtonVisible = visible
+  },
+  setBackButtonVisibility(state, visible) {
+      state.isBackButtonVisible = visible
+  },
+  resetTopButtonsState(state) {
+      state.isBackButtonVisible = initialTopButtonsState.isBackButtonVisible
+      state.isMenuButtonVisible = initialTopButtonsState.isMenuButtonVisible
   }
 }
 

@@ -10,6 +10,7 @@ export default {
   methods: {
     ...mapMutations('questionDictionaryStore', { setDictUnified: 'setUnified' }),
     async onCourseClick(course) {
+      await this.$emit('course-selected', course)
       this.setDictUnified({selectedCourse: course})
       this.$router.push('/')
     },
