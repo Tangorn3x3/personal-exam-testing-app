@@ -22,6 +22,8 @@ export default {
     highlightParagraphBreakBefore: { type: Boolean, default: true },
     highlightParagraphBreakAfter: { type: Boolean, default: false },
 
+    lineHeight: { type: Number, default: 0 },
+
   },
   data: () => ({
     loaded: false,
@@ -40,8 +42,13 @@ export default {
         classes[`larger-${this.enlarge}`] = true
       }
 
+      if (this.lineHeight) {
+        classes[`line-height-${this.lineHeight}`] = true
+      }
+
       return classes
     },
+
     finalText() {
       if (!this.content.text) return null
       if (!this.reformatText) return this.content.text
@@ -118,15 +125,24 @@ export default {
 
   .paragraph-highlighted {
     font-weight: bold;
-    color: #001652;
+    color: #737373;
+  }
+  .mdh-code {
+    font-weight: bold !important;
+    color: #6c6c6c !important;
   }
 
   .code-keyword {font-family: monospace; font-weight: bold; font-size: 105%}
   .code-keyword.java-keyword { color: #022b94; }
   .code-keyword.generic-keyword { color: #022b94; }
-  .code-keyword.camel-keyword { color: #750a80; }
+  .code-keyword.camel-keyword { color: #696969; }
   .code-keyword.method-keyword { color: #750a80; }
   .code-keyword.class-keyword { color: #750a80; }
   .code-keyword.string-keyword { color: #036011; }
   .code-keyword.num-keyword { color: #036011; }
+
+  .line-height-1 { line-height: 1.0; }
+  .line-height-2 { line-height: 1.25; }
+  .line-height-3 { line-height: 1.5; }
+  .line-height-4 { line-height: 1.75; }
 </style>

@@ -179,7 +179,7 @@ export function convertMarkdownToHTML(text) {
     text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
 
     // Замена заголовков
-    text = text.replace(/#{1,6} (.*?)(\n|$)/g, function(match, title) {
+    text = text.replace(/#{1,6} (.*?)(\n|$| $)/g, function(match, title) {
         const level = match.trim().split(' ')[0].length;
         return `<h${level}>${title.trim()}</h${level}>`;
     });
@@ -198,7 +198,7 @@ export function convertMarkdownToHTML(text) {
     //text = text.replace(/>(.*?)(\n|$)/g, '<blockquote>$1</blockquote>');
 
     // Замена моноширинного текста
-    text = text.replace(/`(.*?)`/g, '<code>$1</code>');
+    text = text.replace(/`(.*?)`/g, '<code class="mdh-code">$1</code>');
 
     // Замена подчеркнутого текста
     text = text.replace(/__(.*?)__/g, '<u>$1</u>');

@@ -12,6 +12,8 @@ export default {
     highlightParagraphArgs: { type: Array, default: () => [] },
     highlightParagraphBreakBefore: { type: Boolean, default: true },
     highlightParagraphBreakAfter: { type: Boolean, default: false },
+
+    lineHeight: { type: Number, default: 0 },
   },
   computed: {
     targetContents() {
@@ -27,7 +29,7 @@ export default {
     <h3 v-if="showHeader" class="mb-4">{{course.name}}</h3>
     <div class="description">
       <attempt-content v-for="(content, i) in targetContents" :key="i"
-                       :content="content"
+                       :content="content" :line-height="lineHeight"
                        :highlight-paragraph-args="highlightParagraphArgs" :highlight-paragraph-break-after="highlightParagraphBreakAfter" :highlight-paragraph-break-before="highlightParagraphBreakBefore"
                        normal-text reformat-text/>
     </div>

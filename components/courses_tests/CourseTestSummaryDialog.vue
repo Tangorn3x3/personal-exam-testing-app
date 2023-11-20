@@ -19,8 +19,10 @@ export default {
   data: () => ({
     dialog: false,
 
-    essentialsHighlights: [ 'Be able to', 'Understand', 'Know how '
-      /*, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', */
+    essentialsHighlights: [
+      'Be able to', 'Understand', 'Know ',
+      'Recognize ', 'Create ', 'Identify', 'Determine ',
+      'Write code '
     ],
   }),
   computed: {
@@ -50,10 +52,12 @@ export default {
         <course-test-summary v-if="mode.toLowerCase() === 'summary'"
                              class="pt-8"
                              :text="course.summary"
+                             :line-height="3"
                              :course="course" :show-header="innerHeader"/>
         <course-test-summary v-if="mode.toLowerCase() === 'essentials'"
                              class="pt-8"
                              :text="course.essentials"
+                             :line-height="2"
                              :highlight-paragraph-args="essentialsHighlights" :highlight-paragraph-break-before="true"
                              :course="course" :show-header="innerHeader"/>
       </v-card-text>

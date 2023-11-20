@@ -132,7 +132,7 @@ import BackButton from "@/components/@app-platform/common/inputs/BackButton.vue"
 
 <style>
   .v-application code {
-    color: #a9b7c6 !important;
+    //color: #a9b7c6 !important;
   }
   .theme--dark.v-application code {
     background-color: inherit !important;
