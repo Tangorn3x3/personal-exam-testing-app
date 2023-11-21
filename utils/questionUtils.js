@@ -107,7 +107,7 @@ export function highlightJavaKeywords(text, { simpleJava = false, additionalKeyw
 
     const compositeKeywordsSuffixes = [
         'statement', 'statements', 'expression', 'expressions',
-        'type', 'types', 'modifier', 'modifiers', 'keyword', 'keywords',
+        'type', 'types', 'modifier', 'modifiers', 'keyword', 'keywords', 'block', 'blocks'
     ];
 
     // Список ключевых слов Java
