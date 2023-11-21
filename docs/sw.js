@@ -6,10 +6,6 @@ workbox.precaching.precacheAndRoute([
     "revision": "cb4f8ae9faa370c02e62f4008bb48ca4"
   },
   {
-    "url": "/personal-exam-testing-app/_nuxt/234544a.js",
-    "revision": "efa7ec0d24539907765dd9362c63a5a0"
-  },
-  {
     "url": "/personal-exam-testing-app/_nuxt/6a95923.js",
     "revision": "29bd2456e6009b42006e809487dffc25"
   },
@@ -28,6 +24,10 @@ workbox.precaching.precacheAndRoute([
   {
     "url": "/personal-exam-testing-app/_nuxt/b5971f5.js",
     "revision": "02f9dfd1c7d022d4411d35da51e12f2e"
+  },
+  {
+    "url": "/personal-exam-testing-app/_nuxt/ea081d3.js",
+    "revision": "3615ac7ff62ae43c6369bbc44d1f5224"
   },
   {
     "url": "/personal-exam-testing-app/_nuxt/f1f7983.js",

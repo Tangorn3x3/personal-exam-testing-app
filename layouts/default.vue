@@ -28,7 +28,7 @@
 
       <v-spacer/>
 
-      <v-btn v-if="false && can('viewer')"
+      <v-btn v-if="can('viewer')"
           color="default" icon class="mr-2" @click.stop="clearRootCache"><v-icon>cached</v-icon></v-btn>
 
       <v-btn @click="onLogout" icon><v-icon>exit_to_app</v-icon></v-btn>

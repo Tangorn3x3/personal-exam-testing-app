@@ -167,8 +167,9 @@ export class PlatformCrudTableDesc {
  * @param {Object.<string, PlatformCrudTableDesc>} crudTablesObject
  */
 export function clearCaches(crudTablesObject) {
-    _.forIn(crudTablesObject, (value, key) => {
-        localStorage.removeItem(key);
+    _.forIn(crudTablesObject, (apiType, key) => {
+        let cacheKey = prepareCacheKey(`${apiType.code}`)
+        clearCacheKeyByCode(cacheKey)
     })
 }
 
