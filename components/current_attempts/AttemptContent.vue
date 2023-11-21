@@ -4,7 +4,9 @@ import {convertMarkdownToHTML, highlightJavaKeywords} from "@/utils/questionUtil
 
 const REFORMAT_EXTRA_REPLACE_AWARE_STRINGS = new Map([
   ['. Option', '.\n\nOption'],
+  ['. Options', '.\n\nOptions'],
   ['. Line', '.\n\nLine'],
+  ['. Lines', '.\n\nLines'],
   ['ANSWER:', ''],
 ])
 
