@@ -16,6 +16,8 @@ export default {
     normalText: { type: Boolean, default: false },
 
     reformatText: { type: Boolean, default: false },
+    reformatSimpleJava: { type: Boolean, default: false },
+    reformatNormalKeywords: { type: Boolean, default: false },
     enlarge: { type: Number, default: 0 },
 
     highlightParagraphArgs: { type: Array, default: () => [] },
@@ -61,7 +63,12 @@ export default {
 
       // Заменяем переносы строк внутри предложений на пробел
       text = text.replace(/([^.\n])\n([^A-ZА-Я])/g, '$1 $2');
-      text = highlightJavaKeywords(text)
+
+      // подсвечиваем ключевые слова
+      let additionalKeywordClasses = []
+      if (this.reformatNormalKeywords) additionalKeywordClasses.push('normal')
+      text = highlightJavaKeywords(text, { simpleJava: this.reformatSimpleJava, additionalKeywordClasses } )
+
       text = convertMarkdownToHTML(text)
 
       // форматируем начала каджого параграфа, если требуется
@@ -133,6 +140,15 @@ export default {
   }
 
   .code-keyword {font-family: monospace; font-weight: bold; font-size: 105%}
+
+  .keyword-suffix {
+    color: #696969;
+    font-family: 'Roboto', sans-serif;
+    font-weight: initial;
+    font-size: initial;
+  }
+
+  .code-keyword.normal {font-size: 1rem}
   .code-keyword.java-keyword { color: #022b94; }
   .code-keyword.generic-keyword { color: #022b94; }
   .code-keyword.camel-keyword { color: #696969; }

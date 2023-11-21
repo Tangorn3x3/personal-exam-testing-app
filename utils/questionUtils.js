@@ -101,8 +101,14 @@ function parseAnswer(inputString) {
 }
 
 
-export function highlightJavaKeywords(text) {
+export function highlightJavaKeywords(text, { simpleJava = false, additionalKeywordClasses = [] } = {}) {
     const CLASS_PLACEHOLDER = '$$class$$';
+    const additionalClasses = ' ' + additionalKeywordClasses.join(' ');
+
+    const compositeKeywordsSuffixes = [
+        'statement', 'statements', 'expression', 'expressions',
+        'type', 'types', 'modifier', 'modifiers', 'keyword', 'keywords',
+    ];
 
     // Список ключевых слов Java
     const javaKeywords = [
@@ -110,16 +116,25 @@ export function highlightJavaKeywords(text) {
         'const', 'continue', 'default', 'do', 'double', 'else', 'enum', 'extends', 'false',
         'final', 'finally', 'float', 'for', 'if', 'implements', 'import', 'instanceof', 'int',
         'interface', 'long', 'native', 'new', 'null', 'package', 'private', 'protected', 'public',
-        'return', 'short', 'static', 'strictfp', 'super', 'switch', 'synchronized', 'this',
+        'return', 'short', 'static', 'non-static', 'strictfp', 'super', 'switch', 'synchronized', 'this',
         'throw', 'throws', 'transient', 'true', 'try', 'void', 'volatile', 'while',
         'var', 'record', 'yield', 'sealed', 'permits', 'non-sealed', 'open', 'module', 'requires', 'exports',
-        '(+)', '(-)', '(*)', '(/)', '(!)', '(<)', '(>)', '(=)', '(==)', '(>=)', '(<=)', '(!!)', '(~)', '(&)', '(&&)', '(|)', '||', '\(\^\)',
     ];
 
-    const javaIgnoredKeywords = javaKeywords.map(keyword => `${keyword} `);
+    // Список упрощенный ключевых слов Java
+    const javaSimpleKeywords = [
+        'abstract', 'assert', 'boolean', 'break', 'byte', 'catch', 'char',
+        'const', 'double', 'enum', 'extends', 'false',
+        'float', 'instanceof', 'int',
+        'native', 'null',
+        'short', 'static', 'non-static', 'strictfp', 'synchronized',
+        'transient', 'true', 'void', 'volatile',
+        'var', 'record', 'yield', 'sealed', 'non-sealed'
+    ];
 
     function highlightJavaSpecialKeywords(match) {
-        if (javaKeywords.includes(match) ) {
+        let keywords = simpleJava ? javaSimpleKeywords : javaKeywords;
+        if (keywords.includes(match) ) {
             return highlightKeywords(match);
         } else {
             return match;
@@ -128,7 +143,12 @@ export function highlightJavaKeywords(text) {
 
     // Функция для выделения ключевых слов в тексте
     function highlightKeywords(match) {
-        return `<span class="${CLASS_PLACEHOLDER}">${match}</span>`;
+        return `<span class="${CLASS_PLACEHOLDER + additionalClasses}">${match}</span>`;
+    }
+
+    // Функция для выделения ключевых слов в тексте
+    function highlightCompositeKeywords(match, prefix, suffix) {
+        return `<span class="${CLASS_PLACEHOLDER + additionalClasses}">${prefix} <span class="keyword-suffix">${suffix}</span></span>`;
     }
 
     let targetText = text;
@@ -141,6 +161,9 @@ export function highlightJavaKeywords(text) {
     const javaKeywordsRegex = /(\w+)|(\([=*\-+&!~^<>]+\))/g;
     targetText = targetText.replace(javaKeywordsRegex, highlightJavaSpecialKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword java-keyword');
 
+    // Заменяем словосочетания с ключевыми словами Java на выделенные версии
+    const javaCompositeKeywordsRegex = new RegExp(`\\b(${javaKeywords.join("|")})\\s+(${compositeKeywordsSuffixes.join("|")})\\b`, "gi");
+    targetText = targetText.replace(javaCompositeKeywordsRegex, highlightCompositeKeywords).replaceAll(CLASS_PLACEHOLDER, 'code-keyword java-keyword');
 
     // Заменяем вызовы методов на выделенные версии
     const methodCallRegex = /(\w+\.\w+\s*\(\))/g;

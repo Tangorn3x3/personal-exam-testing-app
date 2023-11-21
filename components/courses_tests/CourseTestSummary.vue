@@ -30,8 +30,9 @@ export default {
     <div class="description">
       <attempt-content v-for="(content, i) in targetContents" :key="i"
                        :content="content" :line-height="lineHeight"
+                       reformat-text reformat-simple-java reformat-normal-keywords
                        :highlight-paragraph-args="highlightParagraphArgs" :highlight-paragraph-break-after="highlightParagraphBreakAfter" :highlight-paragraph-break-before="highlightParagraphBreakBefore"
-                       normal-text reformat-text/>
+                       normal-text />
     </div>
   </div>
 </template>
