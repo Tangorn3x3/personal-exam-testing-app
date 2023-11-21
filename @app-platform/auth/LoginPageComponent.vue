@@ -4,6 +4,8 @@ import nuxtConfig from "@/nuxt.config";
 import {mapActions, mapState} from "vuex";
 import {list} from "@/@app-platform/services/platformCrudService";
 import appConfig, {PlatformCrudTables} from "@/appConfig";
+import {executeQueuedActions} from "@/@app-platform/services/platformApiClient";
+import * as platformApiClient from "@/@app-platform/services/platformApiClient";
 
 export default {
   directives: {
@@ -40,8 +42,9 @@ export default {
     },
 
     initRequiredData() {
+      platformApiClient.executeQueuedActions()
       this.reloadInfo()
-      list(PlatformCrudTables.courses, {name: 'Java'})
+      //list(PlatformCrudTables.courses, { name: 'Java' })
     }
 
   }

@@ -1,6 +1,6 @@
 import _ from "lodash";
 import notificationService from "./notificationService";
-import {fetchAction} from "./platformApiClient";
+import {fetchAction, clearQueuedActions} from "./platformApiClient";
 import appConfig, {PlatformCrudTables} from "@/appConfig";
 
 const USE_CACHE = process.env.NODE_ENV === 'production'
@@ -171,6 +171,8 @@ export function clearCaches(crudTablesObject) {
         let cacheKey = prepareCacheKey(`${apiType.code}`)
         clearCacheKeyByCode(cacheKey)
     })
+
+    clearQueuedActions()
 }
 
 export function clearAllSupportedCaches() {
@@ -179,6 +181,8 @@ export function clearAllSupportedCaches() {
     Object.keys(localStorage)
         .filter(key => key.startsWith(basePrefix))
         .forEach(key => clearCacheKeyByCode(key));
+
+    clearQueuedActions()
 }
 
 /**

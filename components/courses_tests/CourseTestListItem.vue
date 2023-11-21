@@ -6,7 +6,7 @@ export default {
   components: {CourseTestSummaryDialog},
   props: {
     test: { type: Object, required: true },
-    loading: { type: Boolean, default: false },
+    loading: { type: String, default: false },
   },
 }
 </script>
